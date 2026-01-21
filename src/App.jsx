@@ -7,6 +7,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import Tickets from "./pages/Tickets";
 import CreateTicket from "./pages/CreateTicket";
 import TicketDetails from "./pages/TicketDetails";
+import NotFound from "./pages/NotFound";
 
 
 function App() {
@@ -33,10 +34,13 @@ function App() {
            <Route path="/create-ticket" element={<CreateTicket />} />
            <Route path="/tickets/:id" element={<TicketDetails />} />
            <Route path="/tickets/edit/:id" element={<CreateTicket />} />
+             <Route path="*" element={<NotFound />} />
 
 
 
         </Route>
+                <Route path="*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   );
