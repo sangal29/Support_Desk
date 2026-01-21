@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { getTickets, saveTickets } from "../utils/ticketStorage";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ITEMS_PER_PAGE = 2;
 
@@ -14,13 +15,14 @@ function Tickets() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
+  const hasShownNoResultToast = useRef(false);
 
-  // Load tickets
+  // Load tickets on mount
   useEffect(() => {
     setTickets(getTickets());
   }, []);
 
-  // 🔁 Debounce search (500ms)
+  // debouncing search funcnality 
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -34,42 +36,84 @@ function Tickets() {
     setCurrentPage(1);
   }, [debouncedSearch, statusFilter, priorityFilter]);
 
-  const handleDelete = (id) => {
-    if (!window.confirm("Delete this ticket?")) return;
-
+  // Handle ticket deletion
+  const handleConfirmedDelete = (id) => {
     const updated = tickets.filter((t) => t.id !== id);
     saveTickets(updated);
     setTickets(updated);
+    toast.success("Ticket deleted successfully");
   };
 
-  // 🔍 Search + Filter + Sort
-  const filteredTickets = tickets
-    .filter((t) => {
-      const textMatch =
-        t.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        t.description.toLowerCase().includes(debouncedSearch.toLowerCase());
+  //  adding a confirmation before deleting a ticket
+  const confirmDelete = (id) => {
+    toast(
+      ({ closeToast }) => (
+        <div>
+          <p>Are you sure you want to delete this ticket?</p>
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleConfirmedDelete(id);
+                closeToast();
+              }}
+            >
+              Delete
+            </button>
+            <button className="btn" onClick={closeToast}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { autoClose: false }
+    );
+  };
 
-      const statusMatch = !statusFilter || t.status === statusFilter;
-      const priorityMatch = !priorityFilter || t.priority === priorityFilter;
+  // Filtering and sorting tickets
+  const filteredTickets = useMemo(() => {
+    return tickets
+      .filter((t) => {
+        const textMatch =
+          t.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+          t.description.toLowerCase().includes(debouncedSearch.toLowerCase());
 
-      return textMatch && statusMatch && priorityMatch;
-    })
-    .sort((a, b) => {
-      return sortOrder === "newest"
-        ? new Date(b.createdAt) - new Date(a.createdAt)
-        : new Date(a.createdAt) - new Date(b.createdAt);
-    });
+        const statusMatch = !statusFilter || t.status === statusFilter;
+        const priorityMatch = !priorityFilter || t.priority === priorityFilter;
 
-  // 📄 Pagination logic
+        return textMatch && statusMatch && priorityMatch;
+      })
+      .sort((a, b) =>
+        sortOrder === "newest"
+          ? new Date(b.createdAt) - new Date(a.createdAt)
+          : new Date(a.createdAt) - new Date(b.createdAt)
+      );
+  }, [tickets, debouncedSearch, statusFilter, priorityFilter, sortOrder]);
+
+  // Pagination
   const totalPages = Math.ceil(filteredTickets.length / ITEMS_PER_PAGE);
 
-  const paginatedTickets = filteredTickets.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  const paginatedTickets = useMemo(() => {
+    return filteredTickets.slice(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      currentPage * ITEMS_PER_PAGE
+    );
+  }, [filteredTickets, currentPage]);
+
+  // Toast when no results found 
+  useEffect(() => {
+    if (paginatedTickets.length === 0 && tickets.length > 0) {
+      if (!hasShownNoResultToast.current) {
+        toast.info("No tickets match your search or filters");
+        hasShownNoResultToast.current = true;
+      }
+    } else {
+      hasShownNoResultToast.current = false;
+    }
+  }, [paginatedTickets, tickets]);
 
   return (
-    <div>
+    <div className="tickets-container">
       <h2>Tickets</h2>
 
       {/* SEARCH */}
@@ -81,7 +125,7 @@ function Tickets() {
       />
 
       {/* FILTERS */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
+      <div className="filters">
         <select
           className="input"
           value={statusFilter}
@@ -118,38 +162,46 @@ function Tickets() {
       {paginatedTickets.length === 0 && <p>No tickets found</p>}
 
       {paginatedTickets.map((ticket) => (
-        <div key={ticket.id} className="card" style={{ marginBottom: "10px" }}>
-          <h4>
-            <Link to={`/tickets/${ticket.id}`}>{ticket.title}</Link>
-          </h4>
+        <div
+          key={ticket.id}
+          className="card"
+          style={{ marginBottom: "10px", cursor: "pointer" }}
+          onClick={() => navigate(`/tickets/${ticket.id}`)}
+        >
+          <h4>{ticket.title}</h4>
 
           <p>{ticket.description}</p>
           <p>Status: {ticket.status}</p>
           <p>Priority: {ticket.priority}</p>
-          <p>
-            Created: {new Date(ticket.createdAt).toLocaleString()}
-          </p>
+          <p>Created: {new Date(ticket.createdAt).toLocaleString()}</p>
 
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate(`/tickets/edit/${ticket.id}`)}
-          >
-            Edit
-          </button>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/tickets/edit/${ticket.id}`);
+              }}
+            >
+              Edit
+            </button>
 
-          <button
-            className="btn btn-danger"
-            onClick={() => handleDelete(ticket.id)}
-            style={{ marginLeft: "10px" }}
-          >
-            Delete
-          </button>
+            <button
+              className="btn btn-danger"
+              onClick={(e) => {
+                e.stopPropagation();
+                confirmDelete(ticket.id);
+              }}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ))}
 
       {/* PAGINATION */}
       {totalPages > 1 && (
-        <div style={{ marginTop: "20px" }}>
+        <div className="pagination" style={{ marginTop: "20px" }}>
           <button
             className="btn"
             disabled={currentPage === 1}
@@ -158,7 +210,7 @@ function Tickets() {
             Prev
           </button>
 
-          <span style={{ margin: "0 10px" }}>
+          <span>
             Page {currentPage} of {totalPages}
           </span>
 
