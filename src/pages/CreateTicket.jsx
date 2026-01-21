@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTickets, saveTickets } from "../utils/ticketStorage";
+import { toast } from "react-toastify";
 
 function CreateTicket() {
   const [title, setTitle] = useState("");
@@ -10,7 +11,6 @@ function CreateTicket() {
   const [tags, setTags] = useState("");
   const [assignee, setAssignee] = useState("");
   const [initialComment, setInitialComment] = useState("");
-
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -35,14 +35,13 @@ function CreateTicket() {
 
   const handleSubmit = () => {
     if (!title || !description) {
-      alert("Title and Description are required");
+      toast.error("Title and Description are required");
       return;
     }
 
     const tickets = getTickets();
 
     if (isEdit) {
-      // UPDATE ticket
       const updatedTickets = tickets.map((t) =>
         t.id === Number(id)
           ? {
@@ -58,8 +57,8 @@ function CreateTicket() {
       );
 
       saveTickets(updatedTickets);
+      toast.success("Ticket updated successfully");
     } else {
-      // CREATE new ticket
       const newTicket = {
         id: Date.now(),
         title,
@@ -70,16 +69,17 @@ function CreateTicket() {
         assignee,
         createdAt: new Date().toISOString(),
         comments: initialComment
-  ? [
-      {
-        text: initialComment,
-        createdAt: new Date().toISOString(),
-      },
-    ]
-  : [],
+          ? [
+              {
+                text: initialComment,
+                createdAt: new Date().toISOString(),
+              },
+            ]
+          : [],
       };
 
       saveTickets([...tickets, newTicket]);
+      toast.success("Ticket created successfully");
     }
 
     navigate("/tickets");
@@ -137,12 +137,13 @@ function CreateTicket() {
         value={assignee}
         onChange={(e) => setAssignee(e.target.value)}
       />
+
       <textarea
-  className="input"
-  placeholder="Initial comment (optional)"
-  value={initialComment}
-  onChange={(e) => setInitialComment(e.target.value)}
-/>
+        className="input"
+        placeholder="Initial comment (optional)"
+        value={initialComment}
+        onChange={(e) => setInitialComment(e.target.value)}
+      />
 
       <button className="btn btn-primary" onClick={handleSubmit}>
         {isEdit ? "Update Ticket" : "Create Ticket"}
