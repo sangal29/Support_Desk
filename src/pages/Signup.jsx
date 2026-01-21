@@ -68,6 +68,14 @@ function Signup() {
         <button className="btn btn-primary" onClick={handleSignup}>
           Signup
         </button>
+
+         <button
+          className="btn btn-primary"
+          onClick={() => navigate("/login")}
+          style={{ marginLeft: "10px" }}
+        >
+          Login
+        </button>
       </div>
     </div>
   );
