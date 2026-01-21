@@ -4,10 +4,20 @@ import App from "./App";
 import "./styles/theme.css";
 import { AuthProvider } from "./context/AuthContext";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
       <App />
     </AuthProvider>
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      newestOnTop
+      closeOnClick
+      pauseOnHover
+    />
   </React.StrictMode>
 );

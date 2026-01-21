@@ -1,18 +1,24 @@
+
+/* Login page component that verifies user credentials by comparing them
+ against user data stored in localStorage and triggers authentication
+ state updates on successful login.
+*/
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useAuth();  
+  const { login } = useAuth();
 
   const handleLogin = () => {
     if (!username || !password) {
-      setError("All fields are required");
+      toast.error("All fields are required");
       return;
     }
 
@@ -24,20 +30,19 @@ function Login() {
     );
 
     if (!validUser) {
-      setError("Invalid username or password");
+      toast.error("Invalid username or password");
       return;
     }
 
-    login({ username: validUser.username }); 
-    navigate("/dashboard");                 
+    login({ username: validUser.username });
+    toast.success("Login successful");
+    navigate("/dashboard");
   };
 
   return (
     <div className="container">
       <div className="card">
         <h2>Login</h2>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
 
         <input
           className="input"
