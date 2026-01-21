@@ -1,49 +1,54 @@
-// singup page and only user creat acc one time no duplicy 
+// Signup page: allows a user to create an account once (no duplicate usernames).
+// After successful signup, the user is automatically logged in.
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSignup = () => {
+    // validation the user input
+
     if (!username || !password) {
-      setError("All fields are required");
+      toast.error("All fields are required");
       return;
     }
+
+    //   geting the esisting user from local storage
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    const userExists = users.find(
-      (user) => user.username === username
-    );
+    // 3. Prevent duplicate usernames
+    const userExists = users.find((user) => user.username === username);
 
     if (userExists) {
-      setError("Username already exists");
+      toast.error("Username already exists");
       return;
     }
 
-    const newUser = {
-      username,
-      password,
-    };
-
+    //  Create and store new user in local storage
+    const newUser = { username, password };
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
 
-    navigate("/login");
+    login({ username });
+
+    //    success message and redirect to dashboard
+    toast.success("Account created successfully");
+    navigate("/dashboard");
   };
 
   return (
     <div className="container">
       <div className="card">
         <h2>Create Account</h2>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
 
         <input
           className="input"
@@ -60,22 +65,9 @@ function Signup() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button
-          className="btn btn-primary"
-          onClick={handleSignup}
-        >
+        <button className="btn btn-primary" onClick={handleSignup}>
           Signup
         </button>
-
-        <p style={{ marginTop: "10px" }}>
-          Already have an account?{" "}
-          <span
-            style={{ color: "blue", cursor: "pointer" }}
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </span>
-        </p>
       </div>
     </div>
   );
