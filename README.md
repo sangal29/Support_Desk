@@ -3,7 +3,7 @@
 ## Links
 
 GitHub Repository: https://github.com/your-username/your-repo-name  
-Live Demo (Netlify): https://managyour.netlify.app/login
+Live Demo (Netlify):https://managyour.netlify.app/login
 
 ---
 
