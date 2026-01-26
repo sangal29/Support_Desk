@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getTickets, saveTickets } from "../utils/ticketStorage";
+import styles from "../components/TicketDetails/TicketDetails.module.css";
 
 function TicketDetails() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ function TicketDetails() {
   }, [id]);
 
   const addComment = () => {
-    if (!commentText) return;
+    if (!commentText.trim()) return;
 
     const tickets = getTickets();
 
@@ -42,39 +43,58 @@ function TicketDetails() {
     setTicket(updatedTicket);
   };
 
-  if (!ticket) return <p>Ticket not found</p>;
+  if (!ticket) {
+    return <p className={styles.notFound}>Ticket not found</p>;
+  }
 
   return (
-    <div>
-      <h2>{ticket.title}</h2>
-
-      <p>{ticket.description}</p>
-      <p>Status: {ticket.status}</p>
-      <p>Priority: {ticket.priority}</p>
-
-      <hr />
-
-      <h3>Comments</h3>
-
-      {ticket.comments.length === 0 && <p>No comments yet</p>}
-
-      {ticket.comments.map((c, i) => (
-        <div key={i} className="card" style={{ marginBottom: "10px" }}>
-          <p>{c.text}</p>
-          <small>{new Date(c.createdAt).toLocaleString()}</small>
+    <div className={styles.container}>
+      {/* HEADER */}
+      <div className={styles.header}>
+        <h2>{ticket.title}</h2>
+        <div className={styles.meta}>
+          <span className={styles.status}>{ticket.status}</span>
+          <span className={styles.priority}>{ticket.priority}</span>
         </div>
-      ))}
+      </div>
 
-      <textarea
-        className="input"
-        placeholder="Add a comment"
-        value={commentText}
-        onChange={(e) => setCommentText(e.target.value)}
-      />
+      {/* DESCRIPTION */}
+      <div className={styles.section}>
+        <h4>Description</h4>
+        <p className={styles.description}>{ticket.description}</p>
+      </div>
 
-      <button className="btn btn-primary" onClick={addComment}>
-        Add Comment
-      </button>
+      {/* COMMENTS */}
+      <div className={styles.section}>
+        <h4>Comments</h4>
+
+        {ticket.comments.length === 0 && (
+          <p className={styles.empty}>No comments yet</p>
+        )}
+
+        <div className={styles.commentsList}>
+          {ticket.comments.map((c, i) => (
+            <div key={i} className={styles.commentCard}>
+              <p>{c.text}</p>
+              <span>
+                {new Date(c.createdAt).toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* ADD COMMENT */}
+        <textarea
+          className={styles.textarea}
+          placeholder="Add a comment..."
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+        />
+
+        <button className={styles.addBtn} onClick={addComment}>
+          Add Comment
+        </button>
+      </div>
     </div>
   );
 }
