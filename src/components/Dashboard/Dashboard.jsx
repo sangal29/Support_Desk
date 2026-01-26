@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { getTickets } from "../utils/ticketStorage";
-import styles from "../components/Dashboard/Dashboard.module.css";
+import { useEffect, useState } from 'react';
+import { getTickets } from '../../utils/ticketStorage';
+import styles from './Dashboard.module.css';
 
 function Dashboard() {
   const [tickets, setTickets] = useState([]);
@@ -12,16 +12,16 @@ function Dashboard() {
   const totalTickets = tickets.length;
 
   const statusCount = {
-    open: tickets.filter((t) => t.status === "open").length,
-    inProgress: tickets.filter((t) => t.status === "in-progress").length,
-    resolved: tickets.filter((t) => t.status === "resolved").length,
-    closed: tickets.filter((t) => t.status === "closed").length,
+    open: tickets.filter((t) => t.status === 'open').length,
+    inProgress: tickets.filter((t) => t.status === 'in-progress').length,
+    resolved: tickets.filter((t) => t.status === 'resolved').length,
+    closed: tickets.filter((t) => t.status === 'closed').length,
   };
 
   const priorityCount = {
-    high: tickets.filter((t) => t.priority === "high").length,
-    medium: tickets.filter((t) => t.priority === "medium").length,
-    low: tickets.filter((t) => t.priority === "low").length,
+    high: tickets.filter((t) => t.priority === 'high').length,
+    medium: tickets.filter((t) => t.priority === 'medium').length,
+    low: tickets.filter((t) => t.priority === 'low').length,
   };
 
   return (

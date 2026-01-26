@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getTickets, saveTickets } from "../utils/ticketStorage";
+import { getTickets, saveTickets } from "../../utils/ticketStorage";
 import { toast } from "react-toastify";
-import styles from "../components/CreateTicket/CreateTicket.module.css";
+import styles from "./CreateTicket.module.css";
 
 function CreateTicket() {
   const [title, setTitle] = useState("");
