@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTickets, saveTickets } from "../utils/ticketStorage";
 import { toast } from "react-toastify";
+import styles from "../components/CreateTicket/CreateTicket.module.css";
 
 function CreateTicket() {
   const [title, setTitle] = useState("");
@@ -16,7 +17,7 @@ function CreateTicket() {
   const { id } = useParams();
   const isEdit = Boolean(id);
 
-  // Load existing ticket data when editing
+  
   useEffect(() => {
     if (isEdit) {
       const tickets = getTickets();
@@ -86,68 +87,74 @@ function CreateTicket() {
   };
 
   return (
-    <div>
-      <h2>{isEdit ? "Edit Ticket" : "Create Ticket"}</h2>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <h2 className={styles.title}>
+          {isEdit ? "Edit Ticket" : "Create Ticket"}
+        </h2>
 
-      <input
-        className="input"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+        <input
+          className={styles.input}
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      <textarea
-        className="input"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+        <textarea
+          className={styles.textarea}
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
 
-      <select
-        className="input"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="open">Open</option>
-        <option value="in-progress">In Progress</option>
-        <option value="resolved">Resolved</option>
-        <option value="closed">Closed</option>
-      </select>
+        <div className={styles.row}>
+          <select
+            className={styles.select}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="open">Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
 
-      <select
-        className="input"
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-      >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+          <select
+            className={styles.select}
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
 
-      <input
-        className="input"
-        placeholder="Tags (comma separated)"
-        value={tags}
-        onChange={(e) => setTags(e.target.value)}
-      />
+        <input
+          className={styles.input}
+          placeholder="Tags (comma separated)"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
 
-      <input
-        className="input"
-        placeholder="Assignee"
-        value={assignee}
-        onChange={(e) => setAssignee(e.target.value)}
-      />
+        <input
+          className={styles.input}
+          placeholder="Assignee"
+          value={assignee}
+          onChange={(e) => setAssignee(e.target.value)}
+        />
 
-      <textarea
-        className="input"
-        placeholder="Initial comment (optional)"
-        value={initialComment}
-        onChange={(e) => setInitialComment(e.target.value)}
-      />
+        <textarea
+          className={styles.textarea}
+          placeholder="Initial comment (optional)"
+          value={initialComment}
+          onChange={(e) => setInitialComment(e.target.value)}
+        />
 
-      <button className="btn btn-primary" onClick={handleSubmit}>
-        {isEdit ? "Update Ticket" : "Create Ticket"}
-      </button>
+        <button className={styles.button} onClick={handleSubmit}>
+          {isEdit ? "Update Ticket" : "Create Ticket"}
+        </button>
+      </div>
     </div>
   );
 }
