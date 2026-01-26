@@ -13,13 +13,12 @@
 
 .meta {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-.status,
-.priority {
-  padding: 4px 10px;
-  border-radius: 12px;
+.badge {
+  padding: 4px 12px;
+  border-radius: 14px;
   font-size: 12px;
   text-transform: capitalize;
 }
@@ -70,14 +69,14 @@
 }
 
 .empty {
-  color: #64748b;
   font-size: 14px;
+  color: #64748b;
 }
 
 /* ADD COMMENT */
 .textarea {
   width: 100%;
-  min-height: 80px;
+  min-height: 90px;
   margin-top: 12px;
   padding: 10px;
   border-radius: 6px;
@@ -95,17 +94,16 @@
   background: #2563eb;
   color: white;
   border: none;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
 }
 
 .addBtn:hover {
   background: #1d4ed8;
 }
 
-/* NOT FOUND */
+/* ERROR */
 .notFound {
   color: #dc2626;
   font-size: 14px;

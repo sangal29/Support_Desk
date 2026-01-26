@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout/DashboardLayout";
 import Tickets from "./components/Tickets/Tickets";
 import CreateTicket from "./pages/CreateTicket";
-import TicketDetails from "./pages/TicketDetails";
+import TicketDetails from "./components/TicketDetails/TicketDetails";
 import NotFound from "./pages/NotFound";
 
 
