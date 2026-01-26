@@ -1,5 +1,4 @@
-/* Global Theme  styling */
-
+/* Theme */
 :root {
   --primary: #2563eb;
   --background: #f9fafb;
@@ -15,52 +14,9 @@
   box-sizing: border-box;
 }
 
-/* Body */
+/* Base */
 body {
   font-family: Arial, sans-serif;
   background-color: var(--background);
   color: var(--text);
-}
-
-/* Common Button */
-.btn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background-color: var(--primary);
-  color: white;
-}
-
-.btn-danger {
-  background-color: var(--danger);
-  color: white;
-}
-
-/* Common Input */
-.input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-bottom: 12px;
-}
-
-/* Card */
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
-/* Container */
-.container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 16px;
 }
