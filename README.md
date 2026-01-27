@@ -2,7 +2,8 @@
 
 ## Links
 
-GitHub Repository: https://github.com/your-username/your-repo-name  
+GitHub Repository: https://github.com/sangal29/Support_Desk.git
+
 Live Demo (Netlify):https://managyour.netlify.app/login
 
 ---
