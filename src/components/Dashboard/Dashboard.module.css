@@ -6,7 +6,7 @@
   margin-bottom: 16px;
 }
 
-/* SECTION TITLES */
+
 .sectionTitle {
   margin: 24px 0 12px;
   font-size: 16px;
@@ -14,7 +14,7 @@
   color: #0f172a;
 }
 
-/* CARDS */
+
 .card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -27,7 +27,6 @@
   max-width: 260px;
 }
 
-/* LABEL + VALUE */
 .label {
   font-size: 13px;
   color: #64748b;
@@ -39,14 +38,14 @@
   margin-top: 4px;
 }
 
-/* ROW */
+
 .cardRow {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 768px) {
   .cardRow {
     flex-direction: column;

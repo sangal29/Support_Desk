@@ -2,7 +2,7 @@
   max-width: 900px;
 }
 
-/* HEADER */
+
 .header {
   margin-bottom: 20px;
 }
@@ -33,7 +33,7 @@
   color: #991b1b;
 }
 
-/* SECTIONS */
+
 .section {
   margin-top: 24px;
 }
@@ -42,7 +42,7 @@
   margin-bottom: 8px;
 }
 
-/* DESCRIPTION */
+
 .description {
   background: #f8fafc;
   padding: 12px;
@@ -50,7 +50,7 @@
   border: 1px solid #e5e7eb;
 }
 
-/* COMMENTS */
+
 .commentsList {
   margin-top: 12px;
 }
@@ -73,7 +73,7 @@
   color: #64748b;
 }
 
-/* ADD COMMENT */
+
 .textarea {
   width: 100%;
   min-height: 90px;
@@ -103,7 +103,7 @@
   background: #1d4ed8;
 }
 
-/* ERROR */
+
 .notFound {
   color: #dc2626;
   font-size: 14px;

@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-/* LEFT */
+
 .left {
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
   white-space: nowrap;
 }
 
-/* MENU BUTTON */
+
 .menuBtn {
   display: none;
   background: none;
@@ -34,7 +34,7 @@
   cursor: pointer;
 }
 
-/* RIGHT */
+
 .right {
   display: flex;
   align-items: center;
@@ -57,18 +57,18 @@
   cursor: pointer;
 }
 
-/* ===== MOBILE FIX ===== */
+
 @media (max-width: 768px) {
   .menuBtn {
     display: block;
   }
 
   .left h2 {
-    font-size: 15px; /* key fix */
+    font-size: 15px; 
   }
 
   .username {
-    display: none; /* remove crowding */
+    display: none; 
   }
 
   .logoutBtn {

@@ -6,7 +6,7 @@
   margin-bottom: 16px;
 }
 
-/* SEARCH */
+
 .search {
   width: 100%;
   padding: 10px;
@@ -29,7 +29,7 @@
   border: 1px solid #d1d5db;
 }
 
-/* CARD */
+
 .ticketCard {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -61,7 +61,7 @@
   color: #64748b;
 }
 
-/* ACTIONS */
+
 .actions {
   margin-top: 12px;
   display: flex;
@@ -93,7 +93,7 @@
   border-radius: 6px;
 }
 
-/* PAGINATION */
+
 .pagination {
   margin-top: 20px;
   display: flex;
@@ -101,14 +101,13 @@
   align-items: center;
 }
 
-/* TOAST */
 .toastActions {
   display: flex;
   gap: 10px;
   margin-top: 10px;
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 768px) {
   .cardHeader {
     flex-direction: column;
