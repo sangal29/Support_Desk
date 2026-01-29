@@ -1,0 +1,110 @@
+.container {
+  max-width: 900px;
+}
+
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  margin-bottom: 8px;
+}
+
+.meta {
+  display: flex;
+  gap: 10px;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.status {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.priority {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+
+.section {
+  margin-top: 24px;
+}
+
+.section h4 {
+  margin-bottom: 8px;
+}
+
+
+.description {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+
+.commentsList {
+  margin-top: 12px;
+}
+
+.commentCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.commentCard span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.empty {
+  font-size: 14px;
+  color: #64748b;
+}
+
+
+.textarea {
+  width: 100%;
+  min-height: 90px;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.addBtn {
+  margin-top: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.addBtn:hover {
+  background: #1d4ed8;
+}
+
+
+.notFound {
+  color: #dc2626;
+  font-size: 14px;
+}

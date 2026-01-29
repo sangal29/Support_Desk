@@ -1,0 +1,26 @@
+.layout {
+  min-height: 100vh;
+}
+
+.body {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
+}
+
+
+@media (max-width: 768px) {
+  .body {
+    display: block;
+  }
+}
