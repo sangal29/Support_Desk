@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getTickets, saveTickets } from "../../utils/ticketStorage";
 import { toast } from "react-toastify";
 import styles from "./CreateTicket.module.css";
+import { useAuth } from "../../context/AuthContext";
 
 function CreateTicket() {
   const [title, setTitle] = useState("");
@@ -13,27 +14,40 @@ function CreateTicket() {
   const [assignee, setAssignee] = useState("");
   const [initialComment, setInitialComment] = useState("");
 
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
 
-  
+  // =========================
+  // LOAD TICKET FOR EDIT MODE
+  // =========================
   useEffect(() => {
-    if (isEdit) {
-      const tickets = getTickets();
-      const ticket = tickets.find((t) => t.id === Number(id));
+    if (!isEdit) return;
 
-      if (ticket) {
-        setTitle(ticket.title);
-        setDescription(ticket.description);
-        setStatus(ticket.status);
-        setPriority(ticket.priority);
-        setTags(ticket.tags);
-        setAssignee(ticket.assignee);
-      }
+    const tickets = getTickets();
+
+    const ticket = tickets.find(
+      (t) => t.id === id && t.owner === user.username
+    );
+
+    if (!ticket) {
+      toast.error("Unauthorized or ticket not found");
+      navigate("/tickets", { replace: true });
+      return;
     }
-  }, [id, isEdit]);
 
+    setTitle(ticket.title);
+    setDescription(ticket.description);
+    setStatus(ticket.status);
+    setPriority(ticket.priority);
+    setTags(ticket.tags);
+    setAssignee(ticket.assignee);
+  }, [id, isEdit, user.username, navigate]);
+
+  // =========================
+  // SUBMIT HANDLER
+  // =========================
   const handleSubmit = () => {
     if (!title || !description) {
       toast.error("Title and Description are required");
@@ -43,8 +57,9 @@ function CreateTicket() {
     const tickets = getTickets();
 
     if (isEdit) {
+      // UPDATE TICKET (OWNER SAFE)
       const updatedTickets = tickets.map((t) =>
-        t.id === Number(id)
+        t.id === id && t.owner === user.username
           ? {
               ...t,
               title,
@@ -60,14 +75,16 @@ function CreateTicket() {
       saveTickets(updatedTickets);
       toast.success("Ticket updated successfully");
     } else {
+      // CREATE TICKET (WITH OWNER)
       const newTicket = {
-        id: Date.now(),
+        id: crypto.randomUUID(),
         title,
         description,
         status,
         priority,
         tags,
         assignee,
+        owner: user.username, // ⭐ OWNER ADDED
         createdAt: new Date().toISOString(),
         comments: initialComment
           ? [
@@ -144,12 +161,14 @@ function CreateTicket() {
           onChange={(e) => setAssignee(e.target.value)}
         />
 
-        <textarea
-          className={styles.textarea}
-          placeholder="Initial comment (optional)"
-          value={initialComment}
-          onChange={(e) => setInitialComment(e.target.value)}
-        />
+        {!isEdit && (
+          <textarea
+            className={styles.textarea}
+            placeholder="Initial comment (optional)"
+            value={initialComment}
+            onChange={(e) => setInitialComment(e.target.value)}
+          />
+        )}
 
         <button className={styles.button} onClick={handleSubmit}>
           {isEdit ? "Update Ticket" : "Create Ticket"}
