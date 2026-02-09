@@ -30,7 +30,7 @@ This project demonstrates practical React skills such as routing, protected rout
    npm start
 
 4. Open in browser  
-   http://localhost:3000
+   http://localhost:5173
 
 ---
 
